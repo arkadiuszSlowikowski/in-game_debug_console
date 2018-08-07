@@ -70,10 +70,8 @@ public class InGameDebugConsole_Ctrl : MonoBehaviour
 	private CanvasScaler canvasScaler;
 	[SerializeField]
 	private RectTransform stuffContainer;
-
-
-	public List<Notification_IGDC> nots_alive = new List<Notification_IGDC>();
-	[SerializeField]
+	
+	private List<Notification_IGDC> nots_alive = new List<Notification_IGDC>();
 	private List<Message_IGDC> messages = new List<Message_IGDC>();
 	private Vector2 previousSize;
 	private CursorLockMode prev_cursorLockMode;
@@ -122,6 +120,15 @@ public class InGameDebugConsole_Ctrl : MonoBehaviour
 
 		TurnOnOrOff();
 		Resize(false);
+	}
+
+	private Notification_IGDC CreateNotification(Message_IGDC message)
+	{
+		Notification_IGDC not = Instantiate(not_prefab, nots_parent);
+		not.SetupNotification(message, delegate { ShowNotificationsStackTrace(not); });
+		nots_alive.Add(not);
+
+		return not;
 	}
 
 	private void Application_logMessageReceived(string condition, string stackTrace, LogType type)
@@ -186,8 +193,7 @@ public class InGameDebugConsole_Ctrl : MonoBehaviour
 				break;
 		}
 
-		Notification_IGDC not = Instantiate(not_prefab, nots_parent);
-		not.SetupNotification(message, delegate { ShowNotificationsStackTrace(not); });
+		CreateNotification(message);
 
 		MoveNotifications();
 		if (!stuffContainer.gameObject.activeInHierarchy)
@@ -375,8 +381,7 @@ public class InGameDebugConsole_Ctrl : MonoBehaviour
 					}
 					else
 					{
-						curr_not = Instantiate(not_prefab, nots_parent);
-						curr_not.SetupNotification(messages[i], delegate { ShowNotificationsStackTrace(curr_not); });
+						curr_not = CreateNotification(messages[i]);
 						tray_ctrl.NewUnreadMessage();
 					}
 				}
@@ -401,8 +406,7 @@ public class InGameDebugConsole_Ctrl : MonoBehaviour
 
 					if (!found)
 					{
-						curr_not = Instantiate(not_prefab, nots_parent);
-						curr_not.SetupNotification(messages[m], delegate { ShowNotificationsStackTrace(curr_not); });
+						curr_not = CreateNotification(messages[m]);
 						tray_ctrl.NewUnreadMessage();
 					}
 				}
@@ -411,8 +415,7 @@ public class InGameDebugConsole_Ctrl : MonoBehaviour
 			case STACKING_MODE.NONE:
 				foreach (Message_IGDC message in messages)
 				{
-					curr_not = Instantiate(not_prefab, nots_parent);
-					curr_not.SetupNotification(message, delegate { ShowNotificationsStackTrace(curr_not); });
+					curr_not = CreateNotification(message);
 					tray_ctrl.NewUnreadMessage();
 				}
 				break;

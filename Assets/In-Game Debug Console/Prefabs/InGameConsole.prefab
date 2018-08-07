@@ -3684,8 +3684,6 @@ MonoBehaviour:
   keep_number: 100
   canvasScaler: {fileID: 114093477055311892}
   stuffContainer: {fileID: 224060590329715846}
-  nots_alive: []
-  messages: []
 --- !u!114 &114619083727260976
 MonoBehaviour:
   m_ObjectHideFlags: 1

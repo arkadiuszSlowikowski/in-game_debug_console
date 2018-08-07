@@ -46,7 +46,7 @@ public class Notification_IGDC : MonoBehaviour
 	[SerializeField]
 	private Color error_color;
 
-	public void SetupNotification(Message_IGDC message, UnityAction call)
+	public Notification_IGDC SetupNotification(Message_IGDC message, UnityAction call)
 	{
 		originalHeight = _image.rectTransform.rect.height;
 		this.message = message;
@@ -77,6 +77,6 @@ public class Notification_IGDC : MonoBehaviour
 
 		inStack++;
 
-		InGameDebugConsole_Ctrl.ciop.nots_alive.Add(this);
+		return this;
 	}
 }
